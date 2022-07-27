@@ -26,6 +26,15 @@ function onDeviceReady() {
 
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
-    
+
     cordova.plugins.GleapPlugin.initialize("ogWhNhuiZcGWrva5nlDS8l7a78OfaLlV");
+
+    document.getElementById('actio-button').addEventListener("click", () => {
+        cordova.plugins.GleapPlugin.identify("userId", {
+            "name": "John Doe",
+            "email": "lukas@test.com",
+            "phone": "123456789",
+            "value": 199.30,
+        });
+    });
 }

@@ -16,6 +16,10 @@ exports.open = function (success, error) {
     exec(success, error, 'GleapPlugin', 'open', []);
 };
 
+exports.open = function (description, severity, options, success, error) {
+    exec(success, error, 'GleapPlugin', 'sendSilentCrashReport', [description, severity, options]);
+};
+
 exports.close = function (success, error) {
     exec(success, error, 'GleapPlugin', 'close', []);
 };
