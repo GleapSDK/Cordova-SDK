@@ -1,0 +1,27 @@
+{
+  "name": "cordova-plugin-gleap",
+  "version": "7.0.0",
+  "description": "Know exactly why and how a bug happened. Get reports with screenshots, live action replays and all of the important metadata every time.",
+  "cordova": {
+    "id": "cordova-plugin-gleap",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GleapSDK/Cordova-SDK.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "author": "Gleap GmbH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GleapSDK/Cordova-SDK/issues"
+  },
+  "homepage": "https://github.com/GleapSDK/Cordova-SDK#readme"
+}
