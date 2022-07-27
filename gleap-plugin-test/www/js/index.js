@@ -1,5 +1,3 @@
-import GleapPlugin from 'cordova-plugin-gleap';
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -28,6 +26,6 @@ function onDeviceReady() {
 
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
-
-    GleapPlugin.initialize("ogWhNhuiZcGWrva5nlDS8l7a78OfaLlV");
+    
+    cordova.plugins.GleapPlugin.initialize("ogWhNhuiZcGWrva5nlDS8l7a78OfaLlV");
 }
