@@ -24,8 +24,8 @@ exports.isOpened = function (success, error) {
     exec(success, error, 'GleapPlugin', 'isOpened', []);
 };
 
-exports.startFeedbackFlow = function (feedbackFlow, success, error) {
-    exec(success, error, 'GleapPlugin', 'startFeedbackFlow', [feedbackFlow]);
+exports.startFeedbackFlow = function (feedbackFlow, showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'startFeedbackFlow', [feedbackFlow, showBackButton]);
 };
 
 exports.logEvent = function (name, data, success, error) {

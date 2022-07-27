@@ -91,7 +91,7 @@
 }
 
 - (void)isOpened:(CDVInvokedUrlCommand *)command {
-    
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsBool: [Gleap isOpened]] callbackId:command.callbackId];
 }
 
 - (void)logEvent:(CDVInvokedUrlCommand *)command {
@@ -109,27 +109,53 @@
 }
 
 - (void)startFeedbackFlow:(CDVInvokedUrlCommand *)command {
-    
+    NSString* feedbackFlow = [command.arguments objectAtIndex: 0];
+    bool showBackButton = [command.arguments objectAtIndex: 1];
+    if (feedbackFlow != nil) {
+        [Gleap startFeedbackFlow: feedbackFlow showBackButton: showBackButton];
+    }
+
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 - (void)attachCustomData:(CDVInvokedUrlCommand *)command {
-    
+    NSDictionary* customData = [command.arguments objectAtIndex: 0];
+    if (customData != nil) {
+        [Gleap attachCustomData: customData];
+    }
+
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 - (void)setCustomData:(CDVInvokedUrlCommand *)command {
-    
+    NSString* key = [command.arguments objectAtIndex: 0];
+    NSString* value = [command.arguments objectAtIndex: 1];
+    if (key != nil && value != nil) {
+        [Gleap setCustomData: value forKey: key];
+    }
+
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 - (void)removeCustomData:(CDVInvokedUrlCommand *)command {
-    
+    NSString* key = [command.arguments objectAtIndex: 0];
+    if (key != nil) {
+        [Gleap removeCustomDataForKey: key];
+    }
+
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 - (void)clearCustomData:(CDVInvokedUrlCommand *)command {
-    
+    [Gleap clearCustomData];
+
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 - (void)enableDebugConsoleLog:(CDVInvokedUrlCommand *)command {
-    
+    [Gleap enableDebugConsoleLog];
+
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 @end
