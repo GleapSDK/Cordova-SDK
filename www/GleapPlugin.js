@@ -5,7 +5,7 @@ exports.initialize = function (token, success, error) {
 };
 
 exports.identify = function (userId, userData, userHash, success, error) {
-    exec(success, error, 'GleapPlugin', 'enableDebugConsoleLog', [userId, userData, userHash]);
+    exec(success, error, 'GleapPlugin', 'identify', [userId, userData, userHash]);
 };
 
 exports.setLanguage = function (language, success, error) {
@@ -29,7 +29,7 @@ exports.startFeedbackFlow = function (feedbackFlow, success, error) {
 };
 
 exports.logEvent = function (name, data, success, error) {
-    exec(success, error, 'GleapPlugin', 'eventName', [name, data]);
+    exec(success, error, 'GleapPlugin', 'logEvent', [name, data]);
 };
 
 exports.attachCustomData = function (data, success, error) {
