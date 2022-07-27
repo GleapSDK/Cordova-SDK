@@ -9,11 +9,12 @@
 
 - (void)initialize:(CDVInvokedUrlCommand*)command;
 - (void)identify:(CDVInvokedUrlCommand*)command;
+- (void)startFeedbackFlow:(CDVInvokedUrlCommand*)command;
+- (void)sendSilentCrashReport:(CDVInvokedUrlCommand*)command;
 - (void)setLanguage:(CDVInvokedUrlCommand*)command;
 - (void)open:(CDVInvokedUrlCommand*)command;
 - (void)close:(CDVInvokedUrlCommand*)command;
 - (void)isOpened:(CDVInvokedUrlCommand*)command;
-- (void)startFeedbackFlow:(CDVInvokedUrlCommand*)command;
 - (void)logEvent:(CDVInvokedUrlCommand*)command;
 - (void)attachCustomData:(CDVInvokedUrlCommand*)command;
 - (void)setCustomData:(CDVInvokedUrlCommand*)command;
@@ -67,6 +68,32 @@
     }
 
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
+- (void)sendSilentCrashReport:(CDVInvokedUrlCommand *)command {
+    NSString* description = [command.arguments objectAtIndex: 0];
+    NSString* severity = [command.arguments objectAtIndex: 1];
+    NSDictionary* excludeData = [command.arguments objectAtIndex: 2];
+    
+    GleapBugSeverity prio = MEDIUM;
+    if ([severity isEqualToString: @"LOW"]) {
+        prio = LOW;
+    }
+    if ([severity isEqualToString: @"HIGH"]) {
+        prio = HIGH;
+    }
+    
+    if (excludeData == nil || [excludeData isEqual: [NSNull null]]) {
+        excludeData = [[NSDictionary alloc] init];
+    }
+    
+    [Gleap sendSilentCrashReportWith: description andSeverity: prio andDataExclusion: excludeData andCompletion:^(bool success) {
+        if (success) {
+            [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        } else {
+            [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR] callbackId:command.callbackId];
+        }
+    }];
 }
 
 - (void)setLanguage:(CDVInvokedUrlCommand *)command {
