@@ -1,4 +1,4 @@
-package cordova-plugin-gleap;
+package io.cordova.gleap;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import io.gleap.Gleap;
 import io.gleap.GleapUserProperties;
+import io.gleap.APPLICATIONTYPE;
 
 /**
  * This class echoes a string called from JavaScript.
@@ -80,7 +81,7 @@ public class GleapPlugin extends CordovaPlugin {
     private void initialize(String token, CallbackContext callbackContext) {
         if (token != null && token.length() > 0) {
             Gleap.initialize(token, this.cordova.getActivity().getApplication());
-
+            Gleap.getInstance().setApplicationType(APPLICATIONTYPE.CORDOVA);
             callbackContext.success(token);
         } else {
             callbackContext.error("Expected one non-empty string argument.");
@@ -109,6 +110,7 @@ public class GleapPlugin extends CordovaPlugin {
                     gleapUserProperties.setName(userData.getString("name"));
                 }
             }
+
             Gleap.getInstance().identifyUser("13", gleapUserProperties);
         } catch (Exception ex) {
         }
@@ -123,6 +125,7 @@ public class GleapPlugin extends CordovaPlugin {
     }
 
     private void sendSilentCrashReport(JSONArray args) {
+        cordova.getActivity().runOnUiThread(new Runnable() {
         try {
             String description = args.getString(0);
             Gleap.SEVERITY severity = Gleap.SEVERITY.MEDIUM;
@@ -141,7 +144,9 @@ public class GleapPlugin extends CordovaPlugin {
             Gleap.getInstance().sendSilentCrashReport(description, severity,
                     exclude);
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
+    });
     }
 
     private void close() {
@@ -172,6 +177,7 @@ public class GleapPlugin extends CordovaPlugin {
                 Gleap.getInstance().logEvent(name);
             }
         } catch (Exception ex) {
+            System.out.println(ex);
         }
     }
 
@@ -180,6 +186,7 @@ public class GleapPlugin extends CordovaPlugin {
             JSONObject data = args.getJSONObject(0);
             Gleap.getInstance().attachCustomData(data);
         } catch (Exception ex) {
+            System.out.println(ex);
         }
     }
 
@@ -189,6 +196,7 @@ public class GleapPlugin extends CordovaPlugin {
             String value = args.getString(1);
             Gleap.getInstance().setCustomData(key, value);
         } catch (Exception ex) {
+            System.out.println(ex);
         }
     }
 
@@ -205,6 +213,5 @@ public class GleapPlugin extends CordovaPlugin {
     }
 
     private void enableDebugConsoleLog() {
-
     }
 }
