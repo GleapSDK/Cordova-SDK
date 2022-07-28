@@ -15,7 +15,8 @@
   "devDependencies": {
     "cordova-android": "^10.1.2",
     "cordova-ios": "^6.2.0",
-    "cordova-plugin-gleap": "file:.."
+    "cordova-plugin-gleap": "file:..",
+    "ios": "^0.0.1"
   },
   "cordova": {
     "platforms": [
