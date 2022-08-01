@@ -10,6 +10,8 @@ import org.json.JSONObject;
 import io.gleap.Gleap;
 import io.gleap.GleapUserProperties;
 import io.gleap.APPLICATIONTYPE;
+import io.gleap.PrefillHelper;
+import io.gleap.GleapLogLevel;
 
 /**
  * This class echoes a string called from JavaScript.
@@ -63,8 +65,20 @@ public class GleapPlugin extends CordovaPlugin {
             this.setCustomData(args);
             return true;
         }
+        if (action.equals("clearIdentity")) {
+            this.clearIdentity();
+            return true;
+        }
         if (action.equals("removeCustomData")) {
             this.removeCustomData(args);
+            return true;
+        }
+        if (action.equals("log")) {
+            this.log(args);
+            return true;
+        }
+        if (action.equals("preFillForm")) {
+            this.preFillForm(args);
             return true;
         }
         if (action.equals("clearCustomData")) {
@@ -85,6 +99,15 @@ public class GleapPlugin extends CordovaPlugin {
             callbackContext.success(token);
         } else {
             callbackContext.error("Expected one non-empty string argument.");
+        }
+    }
+
+    private void preFillForm(JSONArray args) {
+        try {
+            JSONObject prefillData = args.getJSONObject(0);
+            
+            PrefillHelper.getInstancen().setPrefillData(prefillData);
+        } catch (Exception ex) {
         }
     }
 
@@ -116,12 +139,36 @@ public class GleapPlugin extends CordovaPlugin {
         }
     }
 
+    private void log(JSONArray args) {
+        try {
+            String message = args.getString(0);
+            GleapLogLevel logLevelObj = GleapLogLevel.INFO;
+
+            try {
+                String logLevel = args.getString(1);
+                if (logLevel && logLevel.equals("ERROR")) {
+                    logLevelObj = GleapLogLevel.ERROR;
+                }
+                if (logLevel && logLevel.equals("WARNING")) {
+                    logLevelObj = GleapLogLevel.WARNING;
+                }
+            } catch (Exception ex) {}
+            
+            Gleap.getInstance().log(message, logLevelObj);
+        } catch (Exception ex) {
+        }
+    }
+
     private void setLanguage(String language) {
         Gleap.getInstance().setLanguage(language);
     }
 
     private void open() {
         Gleap.getInstance().open();
+    }
+
+    private void clearIdentity() {
+        Gleap.getInstance().clearIdentity();
     }
 
     private void sendSilentCrashReport(JSONArray args) {

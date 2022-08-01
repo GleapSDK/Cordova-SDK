@@ -4,8 +4,16 @@ exports.initialize = function (token, success, error) {
     exec(success, error, 'GleapPlugin', 'initialize', [token]);
 };
 
+exports.log = function (message, logLevel, success, error) {
+    exec(success, error, 'GleapPlugin', 'log', [message, logLevel]);
+};
+
 exports.identify = function (userId, userData, userHash, success, error) {
     exec(success, error, 'GleapPlugin', 'identify', [userId, userData, userHash]);
+};
+
+exports.clearIdentity = function (success, error) {
+    exec(success, error, 'GleapPlugin', 'clearIdentity', []);
 };
 
 exports.setLanguage = function (language, success, error) {
@@ -54,4 +62,8 @@ exports.clearCustomData = function (success, error) {
 
 exports.enableDebugConsoleLog = function (success, error) {
     exec(success, error, 'GleapPlugin', 'enableDebugConsoleLog', []);
+};
+
+exports.preFillForm = function (data, success, error) {
+    exec(success, error, 'GleapPlugin', 'preFillForm', [data]);
 };

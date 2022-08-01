@@ -21,6 +21,9 @@
 - (void)removeCustomData:(CDVInvokedUrlCommand*)command;
 - (void)clearCustomData:(CDVInvokedUrlCommand*)command;
 - (void)enableDebugConsoleLog:(CDVInvokedUrlCommand*)command;
+- (void)clearIdentity:(CDVInvokedUrlCommand*)command;
+- (void)log:(CDVInvokedUrlCommand*)command;
+- (void)preFillForm:(CDVInvokedUrlCommand*)command;
 @end
 
 @implementation GleapPlugin
@@ -36,8 +39,45 @@
         [Gleap initializeWithToken: token];
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     }
+    
+    [Gleap setApplicationType: CORDOVA];
 
     [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
+}
+
+- (void)clearIdentity:(CDVInvokedUrlCommand *)command {
+    [Gleap clearIdentity];
+    
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
+- (void)log:(CDVInvokedUrlCommand *)command {
+    NSString* message = [command.arguments objectAtIndex: 0];
+    NSString* logLevel = @"";
+    
+    if (command.arguments.count > 1) {
+        logLevel = [command.arguments objectAtIndex: 1];
+    }
+    
+    GleapLogLevel logLevelObj = INFO;
+    if ([logLevel isEqualToString: @"ERROR"]) {
+        logLevelObj = ERROR;
+    }
+    if ([logLevel isEqualToString: @"WARNING"]) {
+        logLevelObj = WARNING;
+    }
+    
+    [Gleap log: message withLogLevel: logLevelObj];
+    
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
+- (void)preFillForm:(CDVInvokedUrlCommand *)command {
+    NSDictionary* data = [command.arguments objectAtIndex: 0];
+    
+    [Gleap preFillForm: data];
+    
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 - (void)identify:(CDVInvokedUrlCommand *)command {
