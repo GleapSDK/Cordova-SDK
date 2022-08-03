@@ -23,8 +23,6 @@
       "ios",
       "android"
     ],
-    "plugins": {
-      "cordova-plugin-gleap": {}
-    }
+    "plugins": {}
   }
 }
