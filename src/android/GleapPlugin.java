@@ -105,7 +105,7 @@ public class GleapPlugin extends CordovaPlugin {
     private void preFillForm(JSONArray args) {
         try {
             JSONObject prefillData = args.getJSONObject(0);
-            
+
             PrefillHelper.getInstancen().setPrefillData(prefillData);
         } catch (Exception ex) {
         }
@@ -146,14 +146,15 @@ public class GleapPlugin extends CordovaPlugin {
 
             try {
                 String logLevel = args.getString(1);
-                if (logLevel && logLevel.equals("ERROR")) {
+                if (logLevel != null && logLevel.equals("ERROR")) {
                     logLevelObj = GleapLogLevel.ERROR;
                 }
-                if (logLevel && logLevel.equals("WARNING")) {
+                if (logLevel != null && logLevel.equals("WARNING")) {
                     logLevelObj = GleapLogLevel.WARNING;
                 }
-            } catch (Exception ex) {}
-            
+            } catch (Exception ex) {
+            }
+
             Gleap.getInstance().log(message, logLevelObj);
         } catch (Exception ex) {
         }
@@ -173,27 +174,31 @@ public class GleapPlugin extends CordovaPlugin {
 
     private void sendSilentCrashReport(JSONArray args) {
         cordova.getActivity().runOnUiThread(new Runnable() {
-        try {
-            String description = args.getString(0);
-            Gleap.SEVERITY severity = Gleap.SEVERITY.MEDIUM;
-            if (args.getString(1) == "LOW") {
-                severity = Gleap.SEVERITY.LOW;
-            }
-            if (args.getString(1) == "HIGH") {
-                severity = Gleap.SEVERITY.HIGH;
-            }
+            @Override
+            public void run() {
 
-            JSONObject exclude = args.getJSONObject(2);
-            if (exclude == null) {
-                exclude = new JSONObject();
-            }
+                try {
+                    String description = args.getString(0);
+                    Gleap.SEVERITY severity = Gleap.SEVERITY.MEDIUM;
+                    if (args.getString(1) == "LOW") {
+                        severity = Gleap.SEVERITY.LOW;
+                    }
+                    if (args.getString(1) == "HIGH") {
+                        severity = Gleap.SEVERITY.HIGH;
+                    }
 
-            Gleap.getInstance().sendSilentCrashReport(description, severity,
-                    exclude);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    });
+                    JSONObject exclude = args.getJSONObject(2);
+                    if (exclude == null) {
+                        exclude = new JSONObject();
+                    }
+
+                    Gleap.getInstance().sendSilentCrashReport(description, severity,
+                            exclude);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
     }
 
     private void close() {
