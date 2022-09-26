@@ -53,8 +53,8 @@ public class GleapPlugin extends CordovaPlugin {
             this.startFeedbackFlow(args);
             return true;
         }
-        if (action.equals("logEvent")) {
-            this.logEvent(args);
+        if (action.equals("trackEvent")) {
+            this.trackEvent(args);
             return true;
         }
         if (action.equals("attachCustomData")) {
@@ -209,24 +209,32 @@ public class GleapPlugin extends CordovaPlugin {
         return Gleap.getInstance().isOpened();
     }
 
+    private void showFeedbackButton(JSONArray args) {
+        try {
+            Boolean show = args.getBoolean(0);
+            Gleap.getInstance().showFeedbackButton(show);
+        } catch (Exception ex) {
+        }
+    }
+
     private void startFeedbackFlow(JSONArray args) {
         try {
             String feedbackFlow = args.getString(0);
-            Boolean showBackButton = args.getBoolean(0);
+            Boolean showBackButton = args.getBoolean(1);
             Gleap.getInstance().startFeedbackFlow(feedbackFlow, showBackButton);
         } catch (Exception ex) {
         }
     }
 
-    private void logEvent(JSONArray args) {
+    private void trackEvent(JSONArray args) {
         try {
             String name = args.getString(0);
             JSONObject data = args.getJSONObject(1);
 
             if (data != null) {
-                Gleap.getInstance().logEvent(name, data);
+                Gleap.getInstance().trackEvent(name, data);
             } else {
-                Gleap.getInstance().logEvent(name);
+                Gleap.getInstance().trackEvent(name);
             }
         } catch (Exception ex) {
             System.out.println(ex);

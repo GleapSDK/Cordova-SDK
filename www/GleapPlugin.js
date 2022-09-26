@@ -16,6 +16,10 @@ exports.clearIdentity = function (success, error) {
     exec(success, error, 'GleapPlugin', 'clearIdentity', []);
 };
 
+exports.showFeedbackButton = function (show, success, error) {
+    exec(success, error, 'GleapPlugin', 'showFeedbackButton', [show]);
+};
+
 exports.setLanguage = function (language, success, error) {
     exec(success, error, 'GleapPlugin', 'setLanguage', [language]);
 };
@@ -40,8 +44,8 @@ exports.startFeedbackFlow = function (feedbackFlow, showBackButton, success, err
     exec(success, error, 'GleapPlugin', 'startFeedbackFlow', [feedbackFlow, showBackButton]);
 };
 
-exports.logEvent = function (name, data, success, error) {
-    exec(success, error, 'GleapPlugin', 'logEvent', [name, data]);
+exports.trackEvent = function (name, data, success, error) {
+    exec(success, error, 'GleapPlugin', 'trackEvent', [name, data]);
 };
 
 exports.attachCustomData = function (data, success, error) {

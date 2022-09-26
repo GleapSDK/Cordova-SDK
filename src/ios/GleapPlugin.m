@@ -15,7 +15,7 @@
 - (void)open:(CDVInvokedUrlCommand*)command;
 - (void)close:(CDVInvokedUrlCommand*)command;
 - (void)isOpened:(CDVInvokedUrlCommand*)command;
-- (void)logEvent:(CDVInvokedUrlCommand*)command;
+- (void)trackEvent:(CDVInvokedUrlCommand*)command;
 - (void)attachCustomData:(CDVInvokedUrlCommand*)command;
 - (void)setCustomData:(CDVInvokedUrlCommand*)command;
 - (void)removeCustomData:(CDVInvokedUrlCommand*)command;
@@ -161,14 +161,14 @@
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsBool: [Gleap isOpened]] callbackId:command.callbackId];
 }
 
-- (void)logEvent:(CDVInvokedUrlCommand *)command {
+- (void)trackEvent:(CDVInvokedUrlCommand *)command {
     NSString* name = [command.arguments objectAtIndex: 0];
     NSDictionary* data = [command.arguments objectAtIndex: 1];
     if (name != nil) {
         if (data != nil) {
-            [Gleap logEvent: name withData: data];
+            [Gleap trackEvent: name withData: data];
         } else {
-            [Gleap logEvent: name];
+            [Gleap trackEvent: name];
         }
     }
 
@@ -182,6 +182,13 @@
         [Gleap startFeedbackFlow: feedbackFlow showBackButton: showBackButton];
     }
 
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
+- (void)showFeedbackButton:(CDVInvokedUrlCommand *)command {
+    bool show = [command.arguments objectAtIndex: 0];
+    [Gleap showFeedbackButton: show];
+    
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
