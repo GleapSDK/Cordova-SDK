@@ -13,6 +13,7 @@
 - (void)sendSilentCrashReport:(CDVInvokedUrlCommand*)command;
 - (void)setLanguage:(CDVInvokedUrlCommand*)command;
 - (void)open:(CDVInvokedUrlCommand*)command;
+- (void)openNews:(CDVInvokedUrlCommand*)command;
 - (void)close:(CDVInvokedUrlCommand*)command;
 - (void)isOpened:(CDVInvokedUrlCommand*)command;
 - (void)trackEvent:(CDVInvokedUrlCommand*)command;
@@ -147,6 +148,12 @@
 
 - (void)open:(CDVInvokedUrlCommand *)command {
     [Gleap open];
+    
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
+- (void)openNews:(CDVInvokedUrlCommand *)command {
+    [Gleap openNews];
     
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }

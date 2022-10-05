@@ -38,6 +38,10 @@ public class GleapPlugin extends CordovaPlugin {
             this.open();
             return true;
         }
+        if (action.equals("openNews")) {
+            this.openNews();
+            return true;
+        }
         if (action.equals("sendSilentCrashReport")) {
             this.sendSilentCrashReport(args);
             return true;
@@ -166,6 +170,10 @@ public class GleapPlugin extends CordovaPlugin {
 
     private void open() {
         Gleap.getInstance().open();
+    }
+
+    private void openNews() {
+        Gleap.getInstance().openNews();
     }
 
     private void clearIdentity() {
