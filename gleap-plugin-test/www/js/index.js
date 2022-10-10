@@ -28,4 +28,5 @@ function onDeviceReady() {
     document.getElementById('deviceready').classList.add('ready');
 
     cordova.plugins.GleapPlugin.initialize("ogWhNhuiZcGWrva5nlDS8l7a78OfaLlV");
+    cordova.plugins.GleapPlugin.openFeatureRequests();
 }
