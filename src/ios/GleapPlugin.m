@@ -152,6 +152,12 @@
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
+- (void)openFeatureRequests:(CDVInvokedUrlCommand *)command {
+    [Gleap openFeatureRequests];
+    
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
 - (void)openNews:(CDVInvokedUrlCommand *)command {
     [Gleap openNews];
     

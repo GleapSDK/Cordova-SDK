@@ -32,6 +32,10 @@ exports.openNews = function (success, error) {
     exec(success, error, 'GleapPlugin', 'openNews', []);
 };
 
+exports.openFeatureRequests = function (success, error) {
+    exec(success, error, 'GleapPlugin', 'openFeatureRequests', []);
+};
+
 exports.sendSilentCrashReport = function (description, severity, excludeData, success, error) {
     exec(success, error, 'GleapPlugin', 'sendSilentCrashReport', [description, severity, excludeData]);
 };

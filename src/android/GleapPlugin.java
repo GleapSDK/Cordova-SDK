@@ -172,6 +172,10 @@ public class GleapPlugin extends CordovaPlugin {
         Gleap.getInstance().open();
     }
 
+    private void openFeatureRequests() {
+        Gleap.getInstance().openFeatureRequests();
+    }
+
     private void openNews() {
         Gleap.getInstance().openNews();
     }
