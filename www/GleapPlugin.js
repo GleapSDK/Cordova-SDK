@@ -79,3 +79,11 @@ exports.enableDebugConsoleLog = function (success, error) {
 exports.preFillForm = function (data, success, error) {
     exec(success, error, 'GleapPlugin', 'preFillForm', [data]);
 };
+
+exports.getIdentity = function (success, error) {
+    exec(success, error, 'GleapPlugin', 'getIdentity', []);
+};
+
+exports.isUserIdentified = function (success, error) {
+    exec(success, error, 'GleapPlugin', 'isUserIdentified', []);
+};

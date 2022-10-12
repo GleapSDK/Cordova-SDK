@@ -25,6 +25,8 @@
 - (void)clearIdentity:(CDVInvokedUrlCommand*)command;
 - (void)log:(CDVInvokedUrlCommand*)command;
 - (void)preFillForm:(CDVInvokedUrlCommand*)command;
+- (void)getIdentity:(CDVInvokedUrlCommand*)command;
+- (void)isUserIdentified:(CDVInvokedUrlCommand*)command;
 @end
 
 @implementation GleapPlugin
@@ -50,6 +52,14 @@
     [Gleap clearIdentity];
     
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
+- (void)isUserIdentified:(CDVInvokedUrlCommand *)command {
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: [Gleap isUserIdentified] ? @"true" : @"false"] callbackId:command.callbackId];
+}
+
+- (void)getIdentity:(CDVInvokedUrlCommand *)command {
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary: [Gleap getIdentity]] callbackId:command.callbackId];
 }
 
 - (void)log:(CDVInvokedUrlCommand *)command {
@@ -171,7 +181,7 @@
 }
 
 - (void)isOpened:(CDVInvokedUrlCommand *)command {
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsBool: [Gleap isOpened]] callbackId:command.callbackId];
+    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsString: [Gleap isOpened] ? @"true" : @"false"] callbackId:command.callbackId];
 }
 
 - (void)trackEvent:(CDVInvokedUrlCommand *)command {

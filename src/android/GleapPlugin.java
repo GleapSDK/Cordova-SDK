@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.gleap.Gleap;
+import io.gleap.GleapUser;
 import io.gleap.GleapUserProperties;
 import io.gleap.APPLICATIONTYPE;
 import io.gleap.PrefillHelper;
@@ -51,7 +52,7 @@ public class GleapPlugin extends CordovaPlugin {
             return true;
         }
         if (action.equals("isOpened")) {
-            return this.isOpened();
+            return this.isOpened(callbackContext);
         }
         if (action.equals("startFeedbackFlow")) {
             this.startFeedbackFlow(args);
@@ -91,6 +92,14 @@ public class GleapPlugin extends CordovaPlugin {
         }
         if (action.equals("enableDebugConsoleLog")) {
             this.enableDebugConsoleLog();
+            return true;
+        }
+        if (action.equals("getIdentity")) {
+            this.getIdentity(callbackContext);
+            return true;
+        }
+        if (action.equals("isUserIdentified")) {
+            this.isUserIdentified(callbackContext);
             return true;
         }
         return false;
@@ -184,6 +193,31 @@ public class GleapPlugin extends CordovaPlugin {
         Gleap.getInstance().clearIdentity();
     }
 
+    private void getIdentity(CallbackContext callbackContext) {
+        JSONObject identityObj = new JSONObject();
+
+        try {
+            GleapUser gleapUser = Gleap.getInstance().getIdentity();
+            if (gleapUser != null) {
+                GleapUserProperties userProps = gleapUser.getGleapUserProperties();
+
+                if (userProps != null) {
+                    identityObj.put("userId", gleapUser.getUserId());
+                    identityObj.put("phone", userProps.getPhoneNumber());
+                    identityObj.put("email", userProps.getEmail());
+                    identityObj.put("name", userProps.getName());
+                    identityObj.put("value", userProps.getValue());
+                }
+            }
+        } catch (Exception ex) {}
+
+        callbackContext.success(identityObj);
+    }
+
+    private void isUserIdentified(CallbackContext callbackContext) {
+        callbackContext.success(Gleap.getInstance().isUserIdentified());
+    }
+
     private void sendSilentCrashReport(JSONArray args) {
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -217,8 +251,9 @@ public class GleapPlugin extends CordovaPlugin {
         Gleap.getInstance().close();
     }
 
-    private boolean isOpened() {
-        return Gleap.getInstance().isOpened();
+    private boolean isOpened(CallbackContext callbackContext) {
+        callbackContext.success(Gleap.getInstance().isOpened());
+        return true;
     }
 
     private void showFeedbackButton(JSONArray args) {

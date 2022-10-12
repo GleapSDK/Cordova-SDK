@@ -23,10 +23,15 @@ document.addEventListener('deviceready', onDeviceReady, false);
 
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
-
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
 
     cordova.plugins.GleapPlugin.initialize("ogWhNhuiZcGWrva5nlDS8l7a78OfaLlV");
-    cordova.plugins.GleapPlugin.openFeatureRequests();
+    
+    cordova.plugins.GleapPlugin.getIdentity().then((res) => {
+        console.log(res);
+    });
+    cordova.plugins.GleapPlugin.isUserIdentified().then((res) => {
+        console.log(res);
+    });
 }
