@@ -215,7 +215,7 @@ public class GleapPlugin extends CordovaPlugin {
     }
 
     private void isUserIdentified(CallbackContext callbackContext) {
-        callbackContext.success(Gleap.getInstance().isUserIdentified());
+        callbackContext.success(Gleap.getInstance().isUserIdentified() ? 1 : 0);
     }
 
     private void sendSilentCrashReport(JSONArray args) {
@@ -252,7 +252,7 @@ public class GleapPlugin extends CordovaPlugin {
     }
 
     private boolean isOpened(CallbackContext callbackContext) {
-        callbackContext.success(Gleap.getInstance().isOpened());
+        callbackContext.success(Gleap.getInstance().isOpened() ? 1 : 0);
         return true;
     }
 
