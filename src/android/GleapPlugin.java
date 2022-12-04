@@ -43,6 +43,10 @@ public class GleapPlugin extends CordovaPlugin {
             this.openNews(args);
             return true;
         }
+        if (action.equals("openFeatureRequests")) {
+            this.openFeatureRequests(args);
+            return true;
+        }
         if (action.equals("openNewsArticle")) {
             this.openNewsArticle(args);
             return true;
@@ -201,8 +205,10 @@ public class GleapPlugin extends CordovaPlugin {
         Gleap.getInstance().open();
     }
 
-    private void openFeatureRequests() {
-        Gleap.getInstance().openFeatureRequests();
+    private void openFeatureRequests(JSONArray args) {
+        Boolean showBackButton = args.getBoolean(0);
+
+        Gleap.getInstance().openFeatureRequests(showBackButton);
     }
 
     private void openNews(JSONArray args) {

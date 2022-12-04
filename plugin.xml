@@ -16,7 +16,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git" />
             </config>
             <pods use-frameworks="true">
-                <pod name="Gleap" spec="8.2.4" />
+                <pod name="Gleap" spec="8.4.0" />
             </pods>
         </podspec>
     </platform>

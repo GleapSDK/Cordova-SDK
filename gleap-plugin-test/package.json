@@ -19,8 +19,11 @@
   },
   "cordova": {
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ],
-    "plugins": {}
+    "plugins": {
+      "cordova-plugin-gleap": {}
+    }
   }
 }

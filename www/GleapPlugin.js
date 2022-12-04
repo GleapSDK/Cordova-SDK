@@ -28,32 +28,32 @@ exports.open = function (success, error) {
     exec(success, error, 'GleapPlugin', 'open', []);
 };
 
-exports.openNews = function (success, error) {
-    exec(success, error, 'GleapPlugin', 'openNews', []);
+exports.openNews = function (showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'openNews', [showBackButton]);
 };
 
-exports.openNewsArticle = function (success, error) {
-    exec(success, error, 'GleapPlugin', 'openNewsArticle', []);
+exports.openNewsArticle = function (articleId, showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'openNewsArticle', [articleId, showBackButton]);
 };
 
-exports.openFeatureRequests = function (success, error) {
-    exec(success, error, 'GleapPlugin', 'openFeatureRequests', []);
+exports.openFeatureRequests = function (showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'openFeatureRequests', [showBackButton]);
 };
 
-exports.openHelpCenter = function (success, error) {
-    exec(success, error, 'GleapPlugin', 'openHelpCenter', []);
+exports.openHelpCenter = function (showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'openHelpCenter', [showBackButton]);
 };
 
-exports.openHelpCenterArticle = function (success, error) {
-    exec(success, error, 'GleapPlugin', 'openHelpCenterArticle', []);
+exports.openHelpCenterArticle = function (articleId, showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'openHelpCenterArticle', [articleId, showBackButton]);
 };
 
-exports.openHelpCenterCollection = function (success, error) {
-    exec(success, error, 'GleapPlugin', 'openHelpCenterCollection', []);
+exports.openHelpCenterCollection = function (collectionId, showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'openHelpCenterCollection', [collectionId, showBackButton]);
 };
 
-exports.searchHelpCenter = function (success, error) {
-    exec(success, error, 'GleapPlugin', 'searchHelpCenter', []);
+exports.searchHelpCenter = function (term, showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'searchHelpCenter', [term, showBackButton]);
 };
 
 exports.sendSilentCrashReport = function (description, severity, excludeData, success, error) {

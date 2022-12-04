@@ -168,22 +168,24 @@
 }
 
 - (void)openFeatureRequests:(CDVInvokedUrlCommand *)command {
-    [Gleap openFeatureRequests];
+    bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
+
+    [Gleap openFeatureRequests: showBackButton];
     
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 - (void)openNews:(CDVInvokedUrlCommand *)command {
-    bool showBackButton = [command.arguments objectAtIndex: 0];
+    bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
 
-    [Gleap openNews: YES];
+    [Gleap openNews: showBackButton];
     
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 - (void)openNewsArticle:(CDVInvokedUrlCommand *)command {
     NSString* articleId = [command.arguments objectAtIndex: 0];
-    bool showBackButton = [command.arguments objectAtIndex: 1];
+    bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
 
     [Gleap openNewsArticle: articleId andShowBackButton: showBackButton];
     
@@ -191,16 +193,16 @@
 }
 
 - (void)openHelpCenter:(CDVInvokedUrlCommand *)command {
-    bool showBackButton = [command.arguments objectAtIndex: 0];
+    bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
 
-    [Gleap openHelpCenter: YES];
+    [Gleap openHelpCenter: showBackButton];
     
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 - (void)openHelpCenterArticle:(CDVInvokedUrlCommand *)command {
     NSString* articleId = [command.arguments objectAtIndex: 0];
-    bool showBackButton = [command.arguments objectAtIndex: 1];
+    bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
 
     [Gleap openHelpCenterArticle: articleId andShowBackButton: showBackButton];
     
@@ -209,7 +211,7 @@
 
 - (void)openHelpCenterCollection:(CDVInvokedUrlCommand *)command {
     NSString* collectionId = [command.arguments objectAtIndex: 0];
-    bool showBackButton = [command.arguments objectAtIndex: 1];
+    bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
 
     [Gleap openHelpCenterCollection: collectionId andShowBackButton: showBackButton];
     
@@ -218,7 +220,7 @@
 
 - (void)searchHelpCenter:(CDVInvokedUrlCommand *)command {
     NSString* term = [command.arguments objectAtIndex: 0];
-    bool showBackButton = [command.arguments objectAtIndex: 1];
+    bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
 
     [Gleap searchHelpCenter: term andShowBackButton: showBackButton];
     
@@ -251,7 +253,7 @@
 
 - (void)startFeedbackFlow:(CDVInvokedUrlCommand *)command {
     NSString* feedbackFlow = [command.arguments objectAtIndex: 0];
-    bool showBackButton = [command.arguments objectAtIndex: 1];
+    bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
     if (feedbackFlow != nil) {
         [Gleap startFeedbackFlow: feedbackFlow showBackButton: showBackButton];
     }
@@ -260,8 +262,9 @@
 }
 
 - (void)showFeedbackButton:(CDVInvokedUrlCommand *)command {
-    bool show = [command.arguments objectAtIndex: 0];
-    [Gleap showFeedbackButton: show];
+    bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
+    
+    [Gleap showFeedbackButton: showBackButton];
     
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
