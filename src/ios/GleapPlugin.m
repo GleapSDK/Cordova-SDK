@@ -38,25 +38,35 @@
 
 - (void)initialize:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* pluginResult = nil;
-    
-    if (command.arguments.count == 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    } else {
-        NSString* token = [command.arguments objectAtIndex: 0];
-        [Gleap initializeWithToken: token];
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    }
-    
-    [Gleap setApplicationType: CORDOVA];
+    @try {
+        CDVPluginResult* pluginResult = nil;
+        
+        if (command.arguments.count == 0) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+        } else {
+            NSString* token = [command.arguments objectAtIndex: 0];
+            [Gleap initializeWithToken: token];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        }
+        
+        [Gleap setApplicationType: CORDOVA];
 
-    [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)clearIdentity:(CDVInvokedUrlCommand *)command {
-    [Gleap clearIdentity];
-    
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    @try {
+        [Gleap clearIdentity];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)isUserIdentified:(CDVInvokedUrlCommand *)command {
@@ -68,97 +78,122 @@
 }
 
 - (void)log:(CDVInvokedUrlCommand *)command {
-    NSString* message = [command.arguments objectAtIndex: 0];
-    NSString* logLevel = @"";
-    
-    if (command.arguments.count > 1) {
-        logLevel = [command.arguments objectAtIndex: 1];
+    @try {
+        NSString* message = [command.arguments objectAtIndex: 0];
+        NSString* logLevel = @"";
+        
+        if (command.arguments.count > 1) {
+            logLevel = [command.arguments objectAtIndex: 1];
+        }
+        
+        GleapLogLevel logLevelObj = INFO;
+        if ([logLevel isEqualToString: @"ERROR"]) {
+            logLevelObj = ERROR;
+        }
+        if ([logLevel isEqualToString: @"WARNING"]) {
+            logLevelObj = WARNING;
+        }
+        
+        [Gleap log: message withLogLevel: logLevelObj];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
     }
-    
-    GleapLogLevel logLevelObj = INFO;
-    if ([logLevel isEqualToString: @"ERROR"]) {
-        logLevelObj = ERROR;
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
     }
-    if ([logLevel isEqualToString: @"WARNING"]) {
-        logLevelObj = WARNING;
-    }
-    
-    [Gleap log: message withLogLevel: logLevelObj];
-    
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 - (void)preFillForm:(CDVInvokedUrlCommand *)command {
-    NSDictionary* data = [command.arguments objectAtIndex: 0];
-    
-    [Gleap preFillForm: data];
-    
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    @try {
+        NSDictionary* data = [command.arguments objectAtIndex: 0];
+        
+        [Gleap preFillForm: data];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)identify:(CDVInvokedUrlCommand *)command {
-    NSString* userId = [command.arguments objectAtIndex: 0];
-    NSDictionary* userData = [command.arguments objectAtIndex: 1];
-    NSString* userHash = [command.arguments objectAtIndex: 2];
-    
-    GleapUserProperty *gleapUserData = [[GleapUserProperty alloc] init];
-    if (userData != nil) {
-        if ([userData objectForKey: @"email"]) {
-            gleapUserData.email = [userData objectForKey: @"email"];
+    @try {
+        NSString* userId = [command.arguments objectAtIndex: 0];
+        NSDictionary* userData = [command.arguments objectAtIndex: 1];
+        NSString* userHash = [command.arguments objectAtIndex: 2];
+        
+        GleapUserProperty *gleapUserData = [[GleapUserProperty alloc] init];
+        if (userData != nil) {
+            if ([userData objectForKey: @"email"]) {
+                gleapUserData.email = [userData objectForKey: @"email"];
+            }
+            if ([userData objectForKey: @"phone"]) {
+                gleapUserData.phone = [userData objectForKey: @"phone"];
+            }
+            if ([userData objectForKey: @"value"]) {
+                gleapUserData.value = [userData objectForKey: @"value"];
+            }
+            if ([userData objectForKey: @"name"]) {
+                gleapUserData.name = [userData objectForKey: @"name"];
+            }
         }
-        if ([userData objectForKey: @"phone"]) {
-            gleapUserData.phone = [userData objectForKey: @"phone"];
+        
+        if (userHash == nil) {
+            [Gleap identifyUserWith: userId andData: gleapUserData];
+        } else {
+            [Gleap identifyUserWith: userId andData: gleapUserData andUserHash: userHash];
         }
-        if ([userData objectForKey: @"value"]) {
-            gleapUserData.value = [userData objectForKey: @"value"];
-        }
-        if ([userData objectForKey: @"name"]) {
-            gleapUserData.name = [userData objectForKey: @"name"];
-        }
-    }
-    
-    if (userHash == nil) {
-        [Gleap identifyUserWith: userId andData: gleapUserData];
-    } else {
-        [Gleap identifyUserWith: userId andData: gleapUserData andUserHash: userHash];
-    }
 
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)sendSilentCrashReport:(CDVInvokedUrlCommand *)command {
-    NSString* description = [command.arguments objectAtIndex: 0];
-    NSString* severity = [command.arguments objectAtIndex: 1];
-    NSDictionary* excludeData = [command.arguments objectAtIndex: 2];
-    
-    GleapBugSeverity prio = MEDIUM;
-    if ([severity isEqualToString: @"LOW"]) {
-        prio = LOW;
-    }
-    if ([severity isEqualToString: @"HIGH"]) {
-        prio = HIGH;
-    }
-    
-    if (excludeData == nil || [excludeData isEqual: [NSNull null]]) {
-        excludeData = [[NSDictionary alloc] init];
-    }
-    
-    [Gleap sendSilentCrashReportWith: description andSeverity: prio andDataExclusion: excludeData andCompletion:^(bool success) {
-        if (success) {
-            [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
-        } else {
-            [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR] callbackId:command.callbackId];
+    @try {
+        NSString* description = [command.arguments objectAtIndex: 0];
+        NSString* severity = [command.arguments objectAtIndex: 1];
+        NSDictionary* excludeData = [command.arguments objectAtIndex: 2];
+        
+        GleapBugSeverity prio = MEDIUM;
+        if ([severity isEqualToString: @"LOW"]) {
+            prio = LOW;
         }
-    }];
+        if ([severity isEqualToString: @"HIGH"]) {
+            prio = HIGH;
+        }
+        
+        if (excludeData == nil || [excludeData isEqual: [NSNull null]]) {
+            excludeData = [[NSDictionary alloc] init];
+        }
+        
+        [Gleap sendSilentCrashReportWith: description andSeverity: prio andDataExclusion: excludeData andCompletion:^(bool success) {
+            if (success) {
+                [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+            } else {
+                [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR] callbackId:command.callbackId];
+            }
+        }];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)setLanguage:(CDVInvokedUrlCommand *)command {
-    NSString* language = [command.arguments objectAtIndex: 0];
-    if (language != nil) {
-        [Gleap setLanguage: language];
-    }
+    @try {
+        NSString* language = [command.arguments objectAtIndex: 0];
+        if (language != nil) {
+            [Gleap setLanguage: language];
+        }
 
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)open:(CDVInvokedUrlCommand *)command {
@@ -168,63 +203,98 @@
 }
 
 - (void)openFeatureRequests:(CDVInvokedUrlCommand *)command {
-    bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
+    @try {
+        bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
 
-    [Gleap openFeatureRequests: showBackButton];
-    
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [Gleap openFeatureRequests: showBackButton];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)openNews:(CDVInvokedUrlCommand *)command {
-    bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
+    @try {
+        bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
 
-    [Gleap openNews: showBackButton];
-    
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [Gleap openNews: showBackButton];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)openNewsArticle:(CDVInvokedUrlCommand *)command {
-    NSString* articleId = [command.arguments objectAtIndex: 0];
-    bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
+    @try {
+        NSString* articleId = [command.arguments objectAtIndex: 0];
+        bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
 
-    [Gleap openNewsArticle: articleId andShowBackButton: showBackButton];
-    
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [Gleap openNewsArticle: articleId andShowBackButton: showBackButton];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)openHelpCenter:(CDVInvokedUrlCommand *)command {
-    bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
+    @try {
+        bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
 
-    [Gleap openHelpCenter: showBackButton];
-    
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [Gleap openHelpCenter: showBackButton];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)openHelpCenterArticle:(CDVInvokedUrlCommand *)command {
-    NSString* articleId = [command.arguments objectAtIndex: 0];
-    bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
+    @try {
+        NSString* articleId = [command.arguments objectAtIndex: 0];
+        bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
 
-    [Gleap openHelpCenterArticle: articleId andShowBackButton: showBackButton];
-    
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [Gleap openHelpCenterArticle: articleId andShowBackButton: showBackButton];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)openHelpCenterCollection:(CDVInvokedUrlCommand *)command {
-    NSString* collectionId = [command.arguments objectAtIndex: 0];
-    bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
+    @try {
+        NSString* collectionId = [command.arguments objectAtIndex: 0];
+        bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
 
-    [Gleap openHelpCenterCollection: collectionId andShowBackButton: showBackButton];
-    
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [Gleap openHelpCenterCollection: collectionId andShowBackButton: showBackButton];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)searchHelpCenter:(CDVInvokedUrlCommand *)command {
-    NSString* term = [command.arguments objectAtIndex: 0];
-    bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
+    @try {
+        NSString* term = [command.arguments objectAtIndex: 0];
+        bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
 
-    [Gleap searchHelpCenter: term andShowBackButton: showBackButton];
-    
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [Gleap searchHelpCenter: term andShowBackButton: showBackButton];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)close:(CDVInvokedUrlCommand *)command {
@@ -238,63 +308,93 @@
 }
 
 - (void)trackEvent:(CDVInvokedUrlCommand *)command {
-    NSString* name = [command.arguments objectAtIndex: 0];
-    NSDictionary* data = [command.arguments objectAtIndex: 1];
-    if (name != nil) {
-        if (data != nil) {
-            [Gleap trackEvent: name withData: data];
-        } else {
-            [Gleap trackEvent: name];
+    @try {
+        NSString* name = [command.arguments objectAtIndex: 0];
+        NSDictionary* data = [command.arguments objectAtIndex: 1];
+        if (name != nil) {
+            if (data != nil) {
+                [Gleap trackEvent: name withData: data];
+            } else {
+                [Gleap trackEvent: name];
+            }
         }
-    }
 
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)startFeedbackFlow:(CDVInvokedUrlCommand *)command {
-    NSString* feedbackFlow = [command.arguments objectAtIndex: 0];
-    bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
-    if (feedbackFlow != nil) {
-        [Gleap startFeedbackFlow: feedbackFlow showBackButton: showBackButton];
-    }
+    @try {
+        NSString* feedbackFlow = [command.arguments objectAtIndex: 0];
+        bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
+        if (feedbackFlow != nil) {
+            [Gleap startFeedbackFlow: feedbackFlow showBackButton: showBackButton];
+        }
 
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)showFeedbackButton:(CDVInvokedUrlCommand *)command {
-    bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
-    
-    [Gleap showFeedbackButton: showBackButton];
-    
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    @try {
+        bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
+        
+        [Gleap showFeedbackButton: showBackButton];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)attachCustomData:(CDVInvokedUrlCommand *)command {
-    NSDictionary* customData = [command.arguments objectAtIndex: 0];
-    if (customData != nil) {
-        [Gleap attachCustomData: customData];
-    }
+    @try {
+        NSDictionary* customData = [command.arguments objectAtIndex: 0];
+        if (customData != nil) {
+            [Gleap attachCustomData: customData];
+        }
 
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)setCustomData:(CDVInvokedUrlCommand *)command {
-    NSString* key = [command.arguments objectAtIndex: 0];
-    NSString* value = [command.arguments objectAtIndex: 1];
-    if (key != nil && value != nil) {
-        [Gleap setCustomData: value forKey: key];
-    }
+    @try {
+        NSString* key = [command.arguments objectAtIndex: 0];
+        NSString* value = [command.arguments objectAtIndex: 1];
+        if (key != nil && value != nil) {
+            [Gleap setCustomData: value forKey: key];
+        }
 
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)removeCustomData:(CDVInvokedUrlCommand *)command {
-    NSString* key = [command.arguments objectAtIndex: 0];
-    if (key != nil) {
-        [Gleap removeCustomDataForKey: key];
-    }
+    @try {
+        NSString* key = [command.arguments objectAtIndex: 0];
+        if (key != nil) {
+            [Gleap removeCustomDataForKey: key];
+        }
 
-    [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)clearCustomData:(CDVInvokedUrlCommand *)command {

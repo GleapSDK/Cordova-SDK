@@ -28,7 +28,7 @@ function onDeviceReady() {
 
     cordova.plugins.GleapPlugin.initialize("ogWhNhuiZcGWrva5nlDS8l7a78OfaLlV");
     cordova.plugins.GleapPlugin.showFeedbackButton(false);
-    
+
     cordova.plugins.GleapPlugin.getIdentity().then((res) => {
         console.log(res);
     });
