@@ -40,7 +40,27 @@ public class GleapPlugin extends CordovaPlugin {
             return true;
         }
         if (action.equals("openNews")) {
-            this.openNews();
+            this.openNews(args);
+            return true;
+        }
+        if (action.equals("openNewsArticle")) {
+            this.openNewsArticle(args);
+            return true;
+        }
+        if (action.equals("openHelpCenter")) {
+            this.openHelpCenter(args);
+            return true;
+        }
+        if (action.equals("openHelpCenterArticle")) {
+            this.openHelpCenterArticle(args);
+            return true;
+        }
+        if (action.equals("openHelpCenterCollection")) {
+            this.openHelpCenterCollection(args);
+            return true;
+        }
+        if (action.equals("searchHelpCenter")) {
+            this.searchHelpCenter(args);
             return true;
         }
         if (action.equals("sendSilentCrashReport")) {
@@ -185,8 +205,44 @@ public class GleapPlugin extends CordovaPlugin {
         Gleap.getInstance().openFeatureRequests();
     }
 
-    private void openNews() {
-        Gleap.getInstance().openNews();
+    private void openNews(JSONArray args) {
+        Boolean showBackButton = args.getBoolean(0);
+
+        Gleap.getInstance().openNews(showBackButton);
+    }
+
+    private void openNewsArticle(JSONArray args) {
+        String articleId = args.getString(0);
+        Boolean showBackButton = args.getBoolean(1);
+
+        Gleap.getInstance().openNewsArticle(articleId, showBackButton);
+    }
+
+    private void openHelpCenter(JSONArray args) {
+        Boolean showBackButton = args.getBoolean(0);
+
+        Gleap.getInstance().openHelpCenter(showBackButton);
+    }
+
+    private void openHelpCenterArticle(JSONArray args) {
+        String articleId = args.getString(0);
+        Boolean showBackButton = args.getBoolean(1);
+
+        Gleap.getInstance().openHelpCenterArticle(articleId, showBackButton);
+    }
+
+    private void openHelpCenterCollection(JSONArray args) {
+        String collectionId = args.getString(0);
+        Boolean showBackButton = args.getBoolean(1);
+
+        Gleap.getInstance().openHelpCenterCollection(collectionId, showBackButton);
+    }
+
+    private void searchHelpCenter(JSONArray args) {
+        String term = args.getString(0);
+        Boolean showBackButton = args.getBoolean(1);
+
+        Gleap.getInstance().searchHelpCenter(term, showBackButton);
     }
 
     private void clearIdentity() {

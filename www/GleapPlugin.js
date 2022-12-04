@@ -32,8 +32,28 @@ exports.openNews = function (success, error) {
     exec(success, error, 'GleapPlugin', 'openNews', []);
 };
 
+exports.openNewsArticle = function (success, error) {
+    exec(success, error, 'GleapPlugin', 'openNewsArticle', []);
+};
+
 exports.openFeatureRequests = function (success, error) {
     exec(success, error, 'GleapPlugin', 'openFeatureRequests', []);
+};
+
+exports.openHelpCenter = function (success, error) {
+    exec(success, error, 'GleapPlugin', 'openHelpCenter', []);
+};
+
+exports.openHelpCenterArticle = function (success, error) {
+    exec(success, error, 'GleapPlugin', 'openHelpCenterArticle', []);
+};
+
+exports.openHelpCenterCollection = function (success, error) {
+    exec(success, error, 'GleapPlugin', 'openHelpCenterCollection', []);
+};
+
+exports.searchHelpCenter = function (success, error) {
+    exec(success, error, 'GleapPlugin', 'searchHelpCenter', []);
 };
 
 exports.sendSilentCrashReport = function (description, severity, excludeData, success, error) {
