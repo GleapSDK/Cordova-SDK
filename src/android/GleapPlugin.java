@@ -206,49 +206,70 @@ public class GleapPlugin extends CordovaPlugin {
     }
 
     private void openFeatureRequests(JSONArray args) {
-        Boolean showBackButton = args.getBoolean(0);
+        try {
+            Boolean showBackButton = args.getBoolean(0);
 
-        Gleap.getInstance().openFeatureRequests(showBackButton);
+            Gleap.getInstance().openFeatureRequests(showBackButton);
+        } catch (Exception ex) {
+        }
     }
 
     private void openNews(JSONArray args) {
-        Boolean showBackButton = args.getBoolean(0);
+        try {
+            Boolean showBackButton = args.getBoolean(0);
 
-        Gleap.getInstance().openNews(showBackButton);
+            Gleap.getInstance().openNews(showBackButton);
+        } catch (Exception ex) {
+        }
     }
 
     private void openNewsArticle(JSONArray args) {
-        String articleId = args.getString(0);
-        Boolean showBackButton = args.getBoolean(1);
+        try {
+            String articleId = args.getString(0);
+            Boolean showBackButton = args.getBoolean(1);
 
-        Gleap.getInstance().openNewsArticle(articleId, showBackButton);
+            Gleap.getInstance().openNewsArticle(articleId, showBackButton);
+        } catch (Exception ex) {
+        }
     }
 
     private void openHelpCenter(JSONArray args) {
-        Boolean showBackButton = args.getBoolean(0);
+        try {
+            Boolean showBackButton = args.getBoolean(0);
 
-        Gleap.getInstance().openHelpCenter(showBackButton);
+            Gleap.getInstance().openHelpCenter(showBackButton);
+        } catch (Exception ex) {
+        }
     }
 
     private void openHelpCenterArticle(JSONArray args) {
-        String articleId = args.getString(0);
-        Boolean showBackButton = args.getBoolean(1);
+        try {
+            String articleId = args.getString(0);
+            Boolean showBackButton = args.getBoolean(1);
 
-        Gleap.getInstance().openHelpCenterArticle(articleId, showBackButton);
+            Gleap.getInstance().openHelpCenterArticle(articleId, showBackButton);
+        } catch (Exception ex) {
+        }
     }
 
     private void openHelpCenterCollection(JSONArray args) {
-        String collectionId = args.getString(0);
-        Boolean showBackButton = args.getBoolean(1);
+        try {
+            String collectionId = args.getString(0);
+            Boolean showBackButton = args.getBoolean(1);
 
-        Gleap.getInstance().openHelpCenterCollection(collectionId, showBackButton);
+            Gleap.getInstance().openHelpCenterCollection(collectionId, showBackButton);
+        } catch (Exception ex) {
+        }
     }
 
     private void searchHelpCenter(JSONArray args) {
-        String term = args.getString(0);
-        Boolean showBackButton = args.getBoolean(1);
+        try {
+            String term = args.getString(0);
+            Boolean showBackButton = args.getBoolean(1);
 
-        Gleap.getInstance().searchHelpCenter(term, showBackButton);
+            Gleap.getInstance().searchHelpCenter(term, showBackButton);
+        } catch (Exception ex) {
+        }
     }
 
     private void clearIdentity() {
