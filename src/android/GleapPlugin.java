@@ -39,6 +39,10 @@ public class GleapPlugin extends CordovaPlugin {
             this.open();
             return true;
         }
+        if (action.equals("showFeedbackButton")) {
+            this.showFeedbackButton(args);
+            return true;
+        }
         if (action.equals("openNews")) {
             this.openNews(args);
             return true;
