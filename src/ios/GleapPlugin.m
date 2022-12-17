@@ -136,6 +136,9 @@
             if ([userData objectForKey: @"name"]) {
                 gleapUserData.name = [userData objectForKey: @"name"];
             }
+            if ([userData objectForKey: @"customData"]) {
+                gleapUserData.customData = [userData objectForKey: @"customData"];
+            }
         }
         
         if (userHash == nil) {

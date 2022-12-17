@@ -173,6 +173,9 @@ public class GleapPlugin extends CordovaPlugin {
                 if (userData.has("name")) {
                     gleapUserProperties.setName(userData.getString("name"));
                 }
+                if (userData.has("customData")) {
+                    gleapUserProperties.setCustomData(userData.getJSONObject("customData"));
+                }
             }
 
             Gleap.getInstance().identifyUser("13", gleapUserProperties);

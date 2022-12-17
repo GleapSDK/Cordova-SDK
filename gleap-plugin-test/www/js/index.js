@@ -27,12 +27,15 @@ function onDeviceReady() {
     document.getElementById('deviceready').classList.add('ready');
 
     cordova.plugins.GleapPlugin.initialize("ogWhNhuiZcGWrva5nlDS8l7a78OfaLlV");
-    cordova.plugins.GleapPlugin.showFeedbackButton(false);
+    
+    cordova.plugins.GleapPlugin.identify("user129499", {
+        "name": "Peter AAA",
+        "email": "lukas@test.com",
+        "customData": {
+            "eins": true,
+            "two": "Zwei",
+        }
+    });
 
-    cordova.plugins.GleapPlugin.getIdentity().then((res) => {
-        console.log(res);
-    });
-    cordova.plugins.GleapPlugin.isUserIdentified().then((res) => {
-        console.log(res);
-    });
+    cordova.plugins.GleapPlugin.trackPage("Cordova Andro");
 }
