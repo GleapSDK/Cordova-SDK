@@ -26,7 +26,7 @@ function onDeviceReady() {
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
 
-    cordova.plugins.GleapPlugin.initialize("ogWhNhuiZcGWrva5nlDS8l7a78OfaLlV");
+    cordova.plugins.GleapPlugin.initialize("DUPaIr7s689BBblcFI4pc5aBgYJTm7Sc");
     
     cordova.plugins.GleapPlugin.identify("user129499", {
         "name": "Peter AAA",
@@ -38,4 +38,8 @@ function onDeviceReady() {
     });
 
     cordova.plugins.GleapPlugin.trackPage("Cordova Andro");
+
+    setTimeout(() => {
+        cordova.plugins.GleapPlugin.showSurvey("1g9pym", "survey");
+    }, 5000);
 }

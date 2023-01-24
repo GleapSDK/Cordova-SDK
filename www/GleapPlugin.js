@@ -32,6 +32,10 @@ exports.openNews = function (showBackButton, success, error) {
     exec(success, error, 'GleapPlugin', 'openNews', [showBackButton]);
 };
 
+exports.showSurvey = function (surveyId, format, success, error) {
+    exec(success, error, 'GleapPlugin', 'showSurvey', [surveyId, format]);
+};
+
 exports.openNewsArticle = function (articleId, showBackButton, success, error) {
     exec(success, error, 'GleapPlugin', 'openNewsArticle', [articleId, showBackButton]);
 };

@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import io.gleap.Gleap;
 import io.gleap.GleapUser;
+import io.gleap.SurveyType;
 import io.gleap.GleapUserProperties;
 import io.gleap.APPLICATIONTYPE;
 import io.gleap.PrefillHelper;
@@ -106,6 +107,10 @@ public class GleapPlugin extends CordovaPlugin {
             this.removeCustomData(args);
             return true;
         }
+        if (action.equals("showSurvey")) {
+            this.showSurvey(args);
+            return true;
+        }
         if (action.equals("log")) {
             this.log(args);
             return true;
@@ -200,6 +205,24 @@ public class GleapPlugin extends CordovaPlugin {
             }
 
             Gleap.getInstance().log(message, logLevelObj);
+        } catch (Exception ex) {
+        }
+    }
+
+    private void showSurvey(JSONArray args) {
+        try {
+            String surveyId = args.getString(0);
+            String format = args.getString(1);
+            SurveyType surveyFormat;
+            switch (format) {
+                case "survey_full":
+                surveyFormat = SurveyType.SURVEY_FULL;
+                break;
+                default:
+                surveyFormat = SurveyType.SURVEY;
+            }
+
+            Gleap.getInstance().showSurvey(surveyId, surveyFormat);
         } catch (Exception ex) {
         }
     }

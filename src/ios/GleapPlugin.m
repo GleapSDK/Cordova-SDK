@@ -28,6 +28,7 @@
 - (void)clearCustomData:(CDVInvokedUrlCommand*)command;
 - (void)enableDebugConsoleLog:(CDVInvokedUrlCommand*)command;
 - (void)clearIdentity:(CDVInvokedUrlCommand*)command;
+- (void)showSurvey:(CDVInvokedUrlCommand*)command;
 - (void)log:(CDVInvokedUrlCommand*)command;
 - (void)preFillForm:(CDVInvokedUrlCommand*)command;
 - (void)getIdentity:(CDVInvokedUrlCommand*)command;
@@ -52,6 +53,25 @@
         [Gleap setApplicationType: CORDOVA];
 
         [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
+}
+
+- (void)showSurvey:(CDVInvokedUrlCommand *)command {
+    @try {
+        NSString* surveyId = [command.arguments objectAtIndex: 0];
+        NSString* format = [command.arguments objectAtIndex: 1];
+
+        GleapSurveyFormat surveyFormat = SURVEY;
+        if (format != nil && [format isEqualToString: @“survey_full”]) {
+            surveyFormat = SURVEY_FULL;
+        }
+        
+        [Gleap showSurvey: surveyId andFormat: surveyFormat];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
     }
     @catch (NSException *exception) {
         NSLog(@"GleapPlugin: Wrong arguments passed.");
