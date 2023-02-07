@@ -28,6 +28,8 @@ function onDeviceReady() {
 
     cordova.plugins.GleapPlugin.initialize("DUPaIr7s689BBblcFI4pc5aBgYJTm7Sc");
     
+    cordova.plugins.GleapPlugin.setTags(["tag4", "tag5", "tag6"]);
+
     cordova.plugins.GleapPlugin.identify("user129499", {
         "name": "Peter AAA",
         "email": "lukas@test.com",

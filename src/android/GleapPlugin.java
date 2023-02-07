@@ -135,6 +135,10 @@ public class GleapPlugin extends CordovaPlugin {
             this.isUserIdentified(callbackContext);
             return true;
         }
+        if (action.equals("setTags")) {
+            this.setTags(args);
+            return true;
+        }
         return false;
     }
 
@@ -145,6 +149,20 @@ public class GleapPlugin extends CordovaPlugin {
             callbackContext.success(token);
         } else {
             callbackContext.error("Expected one non-empty string argument.");
+        }
+    }
+
+    private void setTags(JSONArray args) {
+        try {
+            JSONArray jsonTags = args.getJSONArray(0);
+            if (jsonTags != null) {
+                String[] tags = new String[jsonTags.length()];
+                for (int i = 0; i < jsonTags.length(); i++) {
+                    tags[i] = jsonTags.getString(i);
+                }
+                Gleap.getInstance().setTags(tags);
+            }
+        } catch (Exception ex) {
         }
     }
 

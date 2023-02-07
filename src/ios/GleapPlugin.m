@@ -89,6 +89,19 @@
     }
 }
 
+- (void)setTags:(CDVInvokedUrlCommand *)command {
+    @try {
+        NSArray* tags = [command.arguments objectAtIndex: 0];
+
+        [Gleap setTags: tags];
+
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
+}
+
 - (void)isUserIdentified:(CDVInvokedUrlCommand *)command {
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: [Gleap isUserIdentified] ? @"true" : @"false"] callbackId:command.callbackId];
 }

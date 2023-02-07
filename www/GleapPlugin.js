@@ -28,6 +28,10 @@ exports.open = function (success, error) {
     exec(success, error, 'GleapPlugin', 'open', []);
 };
 
+exports.setTags = function (tags, success, error) {
+    exec(success, error, 'GleapPlugin', 'setTags', [tags]);
+};
+
 exports.openNews = function (showBackButton, success, error) {
     exec(success, error, 'GleapPlugin', 'openNews', [showBackButton]);
 };
