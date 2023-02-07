@@ -36,6 +36,10 @@ exports.openNews = function (showBackButton, success, error) {
     exec(success, error, 'GleapPlugin', 'openNews', [showBackButton]);
 };
 
+exports.setDisableInAppNotifications = function (disableInAppNotifications, success, error) {
+    exec(success, error, 'GleapPlugin', 'setDisableInAppNotifications', [disableInAppNotifications]);
+};
+
 exports.showSurvey = function (surveyId, format, success, error) {
     exec(success, error, 'GleapPlugin', 'showSurvey', [surveyId, format]);
 };

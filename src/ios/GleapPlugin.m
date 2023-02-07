@@ -33,6 +33,7 @@
 - (void)preFillForm:(CDVInvokedUrlCommand*)command;
 - (void)getIdentity:(CDVInvokedUrlCommand*)command;
 - (void)isUserIdentified:(CDVInvokedUrlCommand*)command;
+- (void)setDisableInAppNotifications:(CDVInvokedUrlCommand*)command;
 @end
 
 @implementation GleapPlugin
@@ -236,6 +237,19 @@
     [Gleap open];
     
     [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
+- (void)setDisableInAppNotifications:(CDVInvokedUrlCommand *)command {
+    @try {
+        bool disableInAppNotifications = [[command.arguments objectAtIndex: 0] boolValue];
+
+        [Gleap setDisableInAppNotifications: disableInAppNotifications];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
 }
 
 - (void)openFeatureRequests:(CDVInvokedUrlCommand *)command {

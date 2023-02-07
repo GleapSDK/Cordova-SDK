@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-gleap",
-  "version": "8.6.0",
+  "version": "8.6.1",
   "description": "Know exactly why and how a bug happened. Get reports with screenshots, live action replays and all of the important metadata every time.",
   "cordova": {
     "id": "cordova-plugin-gleap",

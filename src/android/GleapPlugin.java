@@ -44,6 +44,10 @@ public class GleapPlugin extends CordovaPlugin {
             this.showFeedbackButton(args);
             return true;
         }
+        if (action.equals("setDisableInAppNotifications")) {
+            this.setDisableInAppNotifications(args);
+            return true;
+        }
         if (action.equals("openNews")) {
             this.openNews(args);
             return true;
@@ -258,6 +262,15 @@ public class GleapPlugin extends CordovaPlugin {
             Boolean showBackButton = args.getBoolean(0);
 
             Gleap.getInstance().openFeatureRequests(showBackButton);
+        } catch (Exception ex) {
+        }
+    }
+
+    private void setDisableInAppNotifications(JSONArray args) {
+        try {
+            Boolean disableInAppNotifications = args.getBoolean(0);
+
+            Gleap.getInstance().setDisableInAppNotifications(disableInAppNotifications);
         } catch (Exception ex) {
         }
     }
