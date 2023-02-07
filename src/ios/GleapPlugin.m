@@ -66,7 +66,7 @@
         NSString* format = [command.arguments objectAtIndex: 1];
 
         GleapSurveyFormat surveyFormat = SURVEY;
-        if (format != nil && [format isEqualToString: @“survey_full”]) {
+        if (format != nil && [format isEqualToString: @"survey_full"]) {
             surveyFormat = SURVEY_FULL;
         }
         

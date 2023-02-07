@@ -30,6 +30,8 @@ function onDeviceReady() {
     
     cordova.plugins.GleapPlugin.setTags(["tag4", "tag5", "tag6"]);
 
+    cordova.plugins.GleapPlugin.setDisableInAppNotifications(true);
+
     cordova.plugins.GleapPlugin.identify("user129499", {
         "name": "Peter AAA",
         "email": "lukas@test.com",
