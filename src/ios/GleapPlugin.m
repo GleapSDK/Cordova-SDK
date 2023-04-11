@@ -10,6 +10,7 @@
 - (void)initialize:(CDVInvokedUrlCommand*)command;
 - (void)identify:(CDVInvokedUrlCommand*)command;
 - (void)startFeedbackFlow:(CDVInvokedUrlCommand*)command;
+- (void)startBot:(CDVInvokedUrlCommand*)command;
 - (void)sendSilentCrashReport:(CDVInvokedUrlCommand*)command;
 - (void)setLanguage:(CDVInvokedUrlCommand*)command;
 - (void)open:(CDVInvokedUrlCommand*)command;
@@ -367,6 +368,21 @@
             } else {
                 [Gleap trackEvent: name];
             }
+        }
+
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
+}
+
+- (void)startBot:(CDVInvokedUrlCommand *)command {
+    @try {
+        NSString* botId = [command.arguments objectAtIndex: 0];
+        bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
+        if (botId != nil) {
+            [Gleap startBot: botId showBackButton: showBackButton];
         }
 
         [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];

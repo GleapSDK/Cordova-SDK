@@ -84,6 +84,10 @@ exports.startFeedbackFlow = function (feedbackFlow, showBackButton, success, err
     exec(success, error, 'GleapPlugin', 'startFeedbackFlow', [feedbackFlow, showBackButton]);
 };
 
+exports.startBot = function (botId, showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'startBot', [botId, showBackButton]);
+};
+
 exports.trackPage = function (pageName, success, error) {
     exec(success, error, 'GleapPlugin', 'trackEvent', ["pageView", {
         page: pageName,

@@ -91,6 +91,10 @@ public class GleapPlugin extends CordovaPlugin {
             this.startFeedbackFlow(args);
             return true;
         }
+        if (action.equals("startBot")) {
+            this.startBot(args);
+            return true;
+        }
         if (action.equals("trackEvent")) {
             this.trackEvent(args);
             return true;
@@ -408,6 +412,14 @@ public class GleapPlugin extends CordovaPlugin {
         }
     }
 
+    private void startBot(JSONArray args) {
+        try {
+            String botId = args.getString(0);
+            Boolean showBackButton = args.getBoolean(1);
+            Gleap.getInstance().startBot(botId, showBackButton);
+        } catch (Exception ex) {
+        }
+    }
     private void startFeedbackFlow(JSONArray args) {
         try {
             String feedbackFlow = args.getString(0);
