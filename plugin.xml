@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-gleap" version="11.2.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="cordova-plugin-gleap" version="11.2.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>GleapPlugin</name>
     <js-module name="GleapPlugin" src="www/GleapPlugin.js">
         <clobbers target="cordova.plugins.GleapPlugin" />
@@ -16,7 +16,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git" />
             </config>
             <pods use-frameworks="true">
-                <pod name="Gleap" spec="11.2.0" />
+                <pod name="Gleap" spec="11.2.1" />
             </pods>
         </podspec>
     </platform>
