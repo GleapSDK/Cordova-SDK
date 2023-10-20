@@ -14,6 +14,9 @@
 - (void)sendSilentCrashReport:(CDVInvokedUrlCommand*)command;
 - (void)setLanguage:(CDVInvokedUrlCommand*)command;
 - (void)open:(CDVInvokedUrlCommand*)command;
+- (void)openChecklists:(CDVInvokedUrlCommand*)command;
+- (void)openChecklist:(CDVInvokedUrlCommand*)command;
+- (void)startChecklist:(CDVInvokedUrlCommand*)command;
 - (void)openNews:(CDVInvokedUrlCommand*)command;
 - (void)openNewsArticle:(CDVInvokedUrlCommand*)command;
 - (void)openHelpCenter:(CDVInvokedUrlCommand*)command;
@@ -258,6 +261,47 @@
         bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
 
         [Gleap openFeatureRequests: showBackButton];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
+}
+
+- (void)openChecklists:(CDVInvokedUrlCommand *)command {
+    @try {
+        bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
+
+        [Gleap openChecklists: showBackButton];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
+}
+
+- (void)openChecklist:(CDVInvokedUrlCommand *)command {
+    @try {
+        NSString* checklistId = [command.arguments objectAtIndex: 0];
+        bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
+
+        [Gleap openChecklist: checklistId andShowBackButton: showBackButton];
+        
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
+}
+
+- (void)startChecklist:(CDVInvokedUrlCommand *)command {
+    @try {
+        NSString* outboundId = [command.arguments objectAtIndex: 0];
+        bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
+
+        [Gleap startChecklist: outboundId andShowBackButton: showBackButton];
         
         [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
     }

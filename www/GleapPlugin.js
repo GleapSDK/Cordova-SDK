@@ -36,6 +36,18 @@ exports.openNews = function (showBackButton, success, error) {
     exec(success, error, 'GleapPlugin', 'openNews', [showBackButton]);
 };
 
+exports.openChecklists = function (showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'openChecklists', [showBackButton]);
+};
+
+exports.openChecklist = function (checklistId, showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'openChecklist', [checklistId, showBackButton]);
+};
+
+exports.startChecklist = function (outboundId, showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'startChecklist', [outboundId, showBackButton]);
+};
+
 exports.setDisableInAppNotifications = function (disableInAppNotifications, success, error) {
     exec(success, error, 'GleapPlugin', 'setDisableInAppNotifications', [disableInAppNotifications]);
 };
