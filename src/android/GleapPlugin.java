@@ -208,7 +208,16 @@ public class GleapPlugin extends CordovaPlugin {
                     gleapUserProperties.setEmail(userData.getString("email"));
                 }
                 if (userData.has("phone")) {
-                    gleapUserProperties.setPhoneNumber(userData.getString("phone"));
+                    gleapUserProperties.setPhone(userData.getString("phone"));
+                }
+                if (userData.has("plan")) {
+                    gleapUserProperties.setPlan(userData.getString("plan"));
+                }
+                if (userData.has("companyName")) {
+                    gleapUserProperties.setCompanyName(userData.getString("companyName"));
+                }
+                if (userData.has("companyId")) {
+                    gleapUserProperties.setCompanyId(userData.getString("companyId"));
                 }
                 if (userData.has("value")) {
                     gleapUserProperties.setValue(Double.parseDouble(userData.getString("value")));
@@ -392,7 +401,10 @@ public class GleapPlugin extends CordovaPlugin {
 
                 if (userProps != null) {
                     identityObj.put("userId", gleapUser.getUserId());
-                    identityObj.put("phone", userProps.getPhoneNumber());
+                    identityObj.put("phone", userProps.getPhone());
+                    identityObj.put("plan", userProps.getPlan());
+                    identityObj.put("companyName", userProps.getCompanyName());
+                    identityObj.put("companyId", userProps.getCompanyId());
                     identityObj.put("email", userProps.getEmail());
                     identityObj.put("name", userProps.getName());
                     identityObj.put("value", userProps.getValue());

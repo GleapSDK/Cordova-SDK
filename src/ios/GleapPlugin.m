@@ -168,6 +168,15 @@
             if ([userData objectForKey: @"phone"]) {
                 gleapUserData.phone = [userData objectForKey: @"phone"];
             }
+            if ([userData objectForKey: @"plan"]) {
+                gleapUserData.plan = [userData objectForKey: @"plan"];
+            }
+            if ([userData objectForKey: @"companyId"]) {
+                gleapUserData.companyId = [userData objectForKey: @"companyId"];
+            }
+            if ([userData objectForKey: @"companyName"]) {
+                gleapUserData.companyName = [userData objectForKey: @"companyName"];
+            }
             if ([userData objectForKey: @"value"]) {
                 gleapUserData.value = [userData objectForKey: @"value"];
             }
