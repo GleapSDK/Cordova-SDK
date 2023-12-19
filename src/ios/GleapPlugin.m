@@ -10,6 +10,8 @@
 - (void)initialize:(CDVInvokedUrlCommand*)command;
 - (void)identify:(CDVInvokedUrlCommand*)command;
 - (void)startFeedbackFlow:(CDVInvokedUrlCommand*)command;
+- (void)startClassicForm:(CDVInvokedUrlCommand*)command;
+- (void)startConversation:(CDVInvokedUrlCommand*)command;
 - (void)startBot:(CDVInvokedUrlCommand*)command;
 - (void)sendSilentCrashReport:(CDVInvokedUrlCommand*)command;
 - (void)setLanguage:(CDVInvokedUrlCommand*)command;
@@ -451,6 +453,33 @@
         bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
         if (feedbackFlow != nil) {
             [Gleap startFeedbackFlow: feedbackFlow showBackButton: showBackButton];
+        }
+
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
+}
+
+- (void)startConversation:(CDVInvokedUrlCommand *)command {
+    @try {
+        bool showBackButton = [[command.arguments objectAtIndex: 0] boolValue];
+            [Gleap startConversation: showBackButton];
+
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
+}
+
+- (void)startClassicForm:(CDVInvokedUrlCommand *)command {
+    @try {
+        NSString* formId = [command.arguments objectAtIndex: 0];
+        bool showBackButton = [[command.arguments objectAtIndex: 1] boolValue];
+        if (formId != nil) {
+            [Gleap startClassicForm: formId showBackButton: showBackButton];
         }
 
         [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];

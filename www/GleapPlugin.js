@@ -92,6 +92,14 @@ exports.isOpened = function (success, error) {
     exec(success, error, 'GleapPlugin', 'isOpened', []);
 };
 
+exports.startConversation = function (showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'startConversation', [showBackButton]);
+};
+
+exports.startClassicForm = function (formId, showBackButton, success, error) {
+    exec(success, error, 'GleapPlugin', 'startClassicForm', [formId, showBackButton]);
+};
+
 exports.startFeedbackFlow = function (feedbackFlow, showBackButton, success, error) {
     exec(success, error, 'GleapPlugin', 'startFeedbackFlow', [feedbackFlow, showBackButton]);
 };
