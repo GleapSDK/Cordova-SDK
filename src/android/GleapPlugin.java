@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import io.gleap.Gleap;
 import io.gleap.GleapUser;
 import io.gleap.SurveyType;
-import io.gleap.GleapUserProperties;
+import io.gleap.GleapSessionProperties;
 import io.gleap.APPLICATIONTYPE;
 import io.gleap.PrefillHelper;
 import io.gleap.GleapLogLevel;
@@ -167,6 +167,18 @@ public class GleapPlugin extends CordovaPlugin {
             this.setTags(args);
             return true;
         }
+        if (action.equals("updateContact")) {
+            this.updateContact(args);
+            return true;
+        }
+        if (action.equals("setNetworkLogPropsToIgnore")) {
+            this.setNetworkLogPropsToIgnore(args);
+            return true;
+        }
+        if (action.equals("setNetworkLogsBlacklist")) {
+            this.setNetworkLogsBlacklist(args);
+            return true;
+        }
         return false;
     }
 
@@ -194,6 +206,34 @@ public class GleapPlugin extends CordovaPlugin {
         }
     }
 
+    private void setNetworkLogsBlacklist(JSONArray args) {
+        try {
+            JSONArray jsonBlacklist = args.getJSONArray(0);
+            if (jsonBlacklist != null) {
+                String[] blacklist = new String[jsonBlacklist.length()];
+                for (int i = 0; i < jsonBlacklist.length(); i++) {
+                    blacklist[i] = jsonBlacklist.getString(i);
+                }
+                Gleap.getInstance().setNetworkLogsBlacklist(blacklist);
+            }
+        } catch (Exception ex) {
+        }
+    }
+
+    private void setNetworkLogPropsToIgnore(JSONArray args) {
+        try {
+            JSONArray jsonNetworkLogPropsToIgnore = args.getJSONArray(0);
+            if (jsonNetworkLogPropsToIgnore != null) {
+                String[] networkLogPropsToIgnore = new String[jsonNetworkLogPropsToIgnore.length()];
+                for (int i = 0; i < jsonNetworkLogPropsToIgnore.length(); i++) {
+                    networkLogPropsToIgnore[i] = jsonNetworkLogPropsToIgnore.getString(i);
+                }
+                Gleap.getInstance().setNetworkLogPropsToIgnore(networkLogPropsToIgnore);
+            }
+        } catch (Exception ex) {
+        }
+    }
+
     private void preFillForm(JSONArray args) {
         try {
             JSONObject prefillData = args.getJSONObject(0);
@@ -209,36 +249,74 @@ public class GleapPlugin extends CordovaPlugin {
             JSONObject userData = args.getJSONObject(1);
             String userHash = args.getString(2);
 
-            GleapUserProperties gleapUserProperties = new GleapUserProperties(userId);
+            GleapSessionProperties gleapSessionProperties = new GleapSessionProperties(userId);
 
             if (userData != null) {
                 if (userData.has("email")) {
-                    gleapUserProperties.setEmail(userData.getString("email"));
+                    gleapSessionProperties.setEmail(userData.getString("email"));
                 }
                 if (userData.has("phone")) {
-                    gleapUserProperties.setPhone(userData.getString("phone"));
+                    gleapSessionProperties.setPhone(userData.getString("phone"));
                 }
                 if (userData.has("plan")) {
-                    gleapUserProperties.setPlan(userData.getString("plan"));
+                    gleapSessionProperties.setPlan(userData.getString("plan"));
                 }
                 if (userData.has("companyName")) {
-                    gleapUserProperties.setCompanyName(userData.getString("companyName"));
+                    gleapSessionProperties.setCompanyName(userData.getString("companyName"));
                 }
                 if (userData.has("companyId")) {
-                    gleapUserProperties.setCompanyId(userData.getString("companyId"));
+                    gleapSessionProperties.setCompanyId(userData.getString("companyId"));
                 }
                 if (userData.has("value")) {
-                    gleapUserProperties.setValue(Double.parseDouble(userData.getString("value")));
+                    gleapSessionProperties.setValue(Double.parseDouble(userData.getString("value")));
                 }
                 if (userData.has("name")) {
-                    gleapUserProperties.setName(userData.getString("name"));
+                    gleapSessionProperties.setName(userData.getString("name"));
                 }
                 if (userData.has("customData")) {
-                    gleapUserProperties.setCustomData(userData.getJSONObject("customData"));
+                    gleapSessionProperties.setCustomData(userData.getJSONObject("customData"));
                 }
             }
 
-            Gleap.getInstance().identifyUser("13", gleapUserProperties);
+            Gleap.getInstance().identifyContact(userId, gleapSessionProperties);
+        } catch (Exception ex) {
+        }
+    }
+
+    private void updateContact(JSONArray args) {
+        try {
+            JSONObject userData = args.getJSONObject(0);
+
+            GleapSessionProperties gleapSessionProperties = new GleapSessionProperties(userId);
+
+            if (userData != null) {
+                if (userData.has("email")) {
+                    gleapSessionProperties.setEmail(userData.getString("email"));
+                }
+                if (userData.has("phone")) {
+                    gleapSessionProperties.setPhone(userData.getString("phone"));
+                }
+                if (userData.has("plan")) {
+                    gleapSessionProperties.setPlan(userData.getString("plan"));
+                }
+                if (userData.has("companyName")) {
+                    gleapSessionProperties.setCompanyName(userData.getString("companyName"));
+                }
+                if (userData.has("companyId")) {
+                    gleapSessionProperties.setCompanyId(userData.getString("companyId"));
+                }
+                if (userData.has("value")) {
+                    gleapSessionProperties.setValue(Double.parseDouble(userData.getString("value")));
+                }
+                if (userData.has("name")) {
+                    gleapSessionProperties.setName(userData.getString("name"));
+                }
+                if (userData.has("customData")) {
+                    gleapSessionProperties.setCustomData(userData.getJSONObject("customData"));
+                }
+            }
+
+            Gleap.getInstance().updateContact(gleapSessionProperties);
         } catch (Exception ex) {
         }
     }

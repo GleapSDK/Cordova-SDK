@@ -12,6 +12,10 @@ exports.identify = function (userId, userData, userHash, success, error) {
     exec(success, error, 'GleapPlugin', 'identify', [userId, userData, userHash]);
 };
 
+exports.updateContact = function (userData, success, error) {
+    exec(success, error, 'GleapPlugin', 'updateContact', [userData]);
+};
+
 exports.clearIdentity = function (success, error) {
     exec(success, error, 'GleapPlugin', 'clearIdentity', []);
 };
@@ -30,6 +34,14 @@ exports.open = function (success, error) {
 
 exports.setTags = function (tags, success, error) {
     exec(success, error, 'GleapPlugin', 'setTags', [tags]);
+};
+
+exports.setNetworkLogsBlacklist = function (blacklist, success, error) {
+    exec(success, error, 'GleapPlugin', 'setNetworkLogsBlacklist', [blacklist]);
+};
+
+exports.setNetworkLogPropsToIgnore = function (networkLogPropsToIgnore, success, error) {
+    exec(success, error, 'GleapPlugin', 'setNetworkLogPropsToIgnore', [networkLogPropsToIgnore]);
 };
 
 exports.openNews = function (showBackButton, success, error) {

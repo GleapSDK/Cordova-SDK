@@ -9,6 +9,7 @@
 
 - (void)initialize:(CDVInvokedUrlCommand*)command;
 - (void)identify:(CDVInvokedUrlCommand*)command;
+- (void)updateContact:(CDVInvokedUrlCommand*)command;
 - (void)startFeedbackFlow:(CDVInvokedUrlCommand*)command;
 - (void)startClassicForm:(CDVInvokedUrlCommand*)command;
 - (void)startConversation:(CDVInvokedUrlCommand*)command;
@@ -39,6 +40,9 @@
 - (void)preFillForm:(CDVInvokedUrlCommand*)command;
 - (void)getIdentity:(CDVInvokedUrlCommand*)command;
 - (void)isUserIdentified:(CDVInvokedUrlCommand*)command;
+- (void)setTags:(CDVInvokedUrlCommand*)command;
+- (void)setNetworkLogsBlacklist:(CDVInvokedUrlCommand*)command;
+- (void)setNetworkLogPropsToIgnore:(CDVInvokedUrlCommand*)command;
 - (void)setDisableInAppNotifications:(CDVInvokedUrlCommand*)command;
 @end
 
@@ -101,6 +105,32 @@
         NSArray* tags = [command.arguments objectAtIndex: 0];
 
         [Gleap setTags: tags];
+
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
+}
+
+- (void)setNetworkLogsBlacklist:(CDVInvokedUrlCommand *)command {
+    @try {
+        NSArray* blacklist = [command.arguments objectAtIndex: 0];
+
+        [Gleap setNetworkLogsBlacklist: blacklist];
+
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
+}
+
+- (void)setNetworkLogPropsToIgnore:(CDVInvokedUrlCommand *)command {
+    @try {
+        NSArray* networkLogPropsToIgnore = [command.arguments objectAtIndex: 0];
+
+        [Gleap setNetworkLogPropsToIgnore: networkLogPropsToIgnore];
 
         [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
     }
@@ -191,10 +221,51 @@
         }
         
         if (userHash == nil) {
-            [Gleap identifyUserWith: userId andData: gleapUserData];
+            [Gleap identifyContact: userId andData: gleapUserData];
         } else {
-            [Gleap identifyUserWith: userId andData: gleapUserData andUserHash: userHash];
+            [Gleap identifyContact: userId andData: gleapUserData andUserHash: userHash];
         }
+
+        [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"GleapPlugin: Wrong arguments passed.");
+    }
+}
+
+- (void)updateContact:(CDVInvokedUrlCommand *)command {
+    @try {
+        NSDictionary* userData = [command.arguments objectAtIndex: 0];
+        
+        GleapUserProperty *gleapUserData = [[GleapUserProperty alloc] init];
+        if (userData != nil) {
+            if ([userData objectForKey: @"email"]) {
+                gleapUserData.email = [userData objectForKey: @"email"];
+            }
+            if ([userData objectForKey: @"phone"]) {
+                gleapUserData.phone = [userData objectForKey: @"phone"];
+            }
+            if ([userData objectForKey: @"plan"]) {
+                gleapUserData.plan = [userData objectForKey: @"plan"];
+            }
+            if ([userData objectForKey: @"companyId"]) {
+                gleapUserData.companyId = [userData objectForKey: @"companyId"];
+            }
+            if ([userData objectForKey: @"companyName"]) {
+                gleapUserData.companyName = [userData objectForKey: @"companyName"];
+            }
+            if ([userData objectForKey: @"value"]) {
+                gleapUserData.value = [userData objectForKey: @"value"];
+            }
+            if ([userData objectForKey: @"name"]) {
+                gleapUserData.name = [userData objectForKey: @"name"];
+            }
+            if ([userData objectForKey: @"customData"]) {
+                gleapUserData.customData = [userData objectForKey: @"customData"];
+            }
+        }
+        
+        [Gleap updateContact: gleapUserData];
 
         [self.commandDelegate sendPluginResult: [CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
     }
