@@ -209,6 +209,9 @@
             if ([userData objectForKey: @"companyName"]) {
                 gleapUserData.companyName = [userData objectForKey: @"companyName"];
             }
+            if ([userData objectForKey: @"avatar"]) {
+                gleapUserData.avatar = [userData objectForKey: @"avatar"];
+            }
             if ([userData objectForKey: @"value"]) {
                 gleapUserData.value = [userData objectForKey: @"value"];
             }
@@ -253,6 +256,9 @@
             }
             if ([userData objectForKey: @"companyName"]) {
                 gleapUserData.companyName = [userData objectForKey: @"companyName"];
+            }
+            if ([userData objectForKey: @"avatar"]) {
+                gleapUserData.avatar = [userData objectForKey: @"avatar"];
             }
             if ([userData objectForKey: @"value"]) {
                 gleapUserData.value = [userData objectForKey: @"value"];
