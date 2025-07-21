@@ -1,4 +1,4 @@
-# Gleap Cordova SDK
+# Gleap Cordova SDK [deprecated]
 
 ![Gleap Cordova SDK Intro](https://raw.githubusercontent.com/GleapSDK/Gleap-iOS-SDK/main/Resources/GleapHeaderImage.png)
 
